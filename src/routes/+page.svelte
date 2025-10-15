@@ -1,5 +1,6 @@
 <script>
   import { onMount, tick } from 'svelte';
+  import { browser } from '$app/environment';
   import AgentAvatar from '$lib/components/AgentAvatar.svelte';
   import AgentShowcase from '$lib/components/AgentShowcase.svelte';
 
@@ -20,6 +21,7 @@
   let isLoading = false;
   let errorMsg = '';
   let mode = 'router'; // 'router' | 'aggregator'
+  let isMac = false; // Will be set based on platform
 
   // ---------- Agent meta (extend freely) ----------
   const AGENTS = {
@@ -132,6 +134,11 @@
   onMount(() => {
     // Focus input on load
     inputEl?.focus();
+    
+    // Detect platform for keyboard shortcuts
+    if (browser && navigator?.platform) {
+      isMac = navigator.platform.includes('Mac');
+    }
     
     // Add keyboard shortcut handler
     document.addEventListener('keydown', handleKeyboardShortcut);
@@ -899,7 +906,7 @@
           </div>
         </div>
         <div class="keyboardShortcuts">
-          Enter to send • Shift+Enter for newline • {navigator.platform.includes('Mac') ? '⌘D' : 'Ctrl+D'} for debug
+          Enter to send • Shift+Enter for newline • {isMac ? '⌘D' : 'Ctrl+D'} for debug
         </div>
       </div>
     </div>
@@ -922,7 +929,7 @@
             <div class="debugModalIcon">🐛</div>
             <span>Debug Information</span>
             <span class="shortcutBadge">
-              {navigator.platform.includes('Mac') ? '⌘' : 'Ctrl'} + D
+              {isMac ? '⌘' : 'Ctrl'} + D
             </span>
           </div>
           <button class="debugModalClose" on:click={() => debugOpen = false} aria-label="Close debug modal">
