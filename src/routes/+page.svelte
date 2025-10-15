@@ -231,38 +231,25 @@
     border-radius: 999px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.9rem;
+    position: relative;
   }
-  .seg button:hover:not([aria-pressed="true"]) {
+  .seg button:hover:not([aria-selected="true"]) {
     color: var(--text);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
   }
-  .seg button[aria-pressed="true"] {
-    color: white;
-    background: linear-gradient(135deg, rgba(122, 163, 255, 0.25), rgba(122, 163, 255, 0.15));
+  .seg button[aria-selected="true"] {
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(122, 163, 255, 0.35), rgba(122, 163, 255, 0.25));
     box-shadow: 
-      inset 0 0 0 1px rgba(122, 163, 255, 0.4),
-      0 2px 8px rgba(122, 163, 255, 0.15);
-    font-weight: 700;
+      inset 0 0 0 1.5px rgba(122, 163, 255, 0.6),
+      0 4px 12px rgba(122, 163, 255, 0.25),
+      0 2px 4px rgba(0, 0, 0, 0.2);
+    font-weight: 800;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
-
-  .toolbar {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: .75rem; margin: 1rem 0 .9rem;
-  }
-
-  .btn {
-    border: 1px solid var(--stroke);
-    background: var(--glass);
-    color: var(--text);
-    border-radius: 12px;
-    padding: .55rem .8rem;
-    font-weight: 600;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-  }
-  .btn:hover { background: var(--glass-2); }
 
   /* Chat card */
   .chatCard {
@@ -345,14 +332,6 @@
     width: 8px; height: 8px; border-radius: 50%;
     box-shadow: 0 0 0 2px rgba(255,255,255,0.15) inset;
   }
-
-  .typing {
-    display: inline-flex; gap: 6px; align-items: center;
-  }
-  .dot { width: 7px; height: 7px; background: #9aa7c7; border-radius: 50%; animation: blink 1.4s infinite both; }
-  .dot:nth-child(2) { animation-delay: .2s; }
-  .dot:nth-child(3) { animation-delay: .4s; }
-  @keyframes blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
 
   /* Modern thinking state */
   .thinking-bubble {
@@ -542,16 +521,6 @@
     opacity: 0.8;
     pointer-events: none;
   }
-
-  .iconBtn {
-    border: 1px solid var(--stroke);
-    background: var(--glass);
-    color: var(--text);
-    border-radius: 10px;
-    padding: .55rem .6rem;
-    cursor: pointer;
-  }
-  .iconBtn:hover { background: var(--glass-2); }
 
   /* Error */
   .error {
@@ -834,14 +803,12 @@
       <button
         role="tab"
         aria-selected={mode === 'router'}
-        aria-pressed={mode === 'router'}
         aria-label="Single Agent Mode"
         on:click={() => (mode = 'router')}
       >🎯 Best Match</button>
       <button
         role="tab"
         aria-selected={mode === 'aggregator'}
-        aria-pressed={mode === 'aggregator'}
         aria-label="All Agents Mode"
         on:click={() => (mode = 'aggregator')}
       >🎪 Team Reply</button>
@@ -940,7 +907,15 @@
 
   <!-- Debug Modal -->
   {#if debugOpen}
-    <div class="debugModalBackdrop" on:click={closeDebugModal}>
+    <div 
+      class="debugModalBackdrop" 
+      role="button" 
+      tabindex="-1"
+      on:click={closeDebugModal}
+      on:keydown={(e) => {
+        if (e.key === 'Escape') closeDebugModal();
+      }}
+    >
       <div class="debugModal" role="dialog" aria-labelledby="debug-modal-title" aria-modal="true">
         <div class="debugModalHeader">
           <div class="debugModalTitle" id="debug-modal-title">

@@ -6,7 +6,7 @@ A whimsical multi-agent conversational AI system that brings the beloved charact
 
 ## 🌊 Live Demo
 
-**[View Live Demo on Vercel →](YOUR_VERCEL_URL_HERE)**
+**[View Live Demo on Vercel →](https://spongebot-squarechat.vercel.app/)**
 
 ## ✨ Features
 

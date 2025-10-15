@@ -36,23 +36,17 @@
   <div class="agent-showcase" role="region" aria-labelledby="crew-title">
     <div class="showcase-header">
       <h3 id="crew-title">Meet the Crew</h3>
-      <p>Hover or focus a card to flip. Press Enter to toggle.</p>
+      <p>Hover or focus a card to flip.</p>
     </div>
   
     <div class="agents-grid">
       {#each agents as agent, i}
         <div
           class="flip-card"
+          role="button"
           style={`--accent-h:${agent.hue}; --delay:${i * 60}ms`}
           tabindex="0"
-          aria-label={`${agent.name} — press Enter to flip`}
-          on:keydown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.currentTarget.classList.toggle('is-flipped');
-              e.preventDefault();
-            }
-          }}
-          on:blur={(e) => e.currentTarget.classList.remove('is-flipped')}
+          aria-label={`${agent.name} agent card`}
         >
           <div class="flip-card-inner">
             <!-- Front -->
@@ -165,8 +159,7 @@
   
     /* hover/focus flip */
     .flip-card:hover .flip-card-inner,
-    .flip-card:focus-visible .flip-card-inner,
-    .flip-card.is-flipped .flip-card-inner {
+    .flip-card:focus-visible .flip-card-inner {
       transform: rotateY(180deg);
     }
   
